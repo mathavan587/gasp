@@ -1,138 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Product Showcase</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-  <style>
-    .product-card {
-      perspective: 1000px;
-    }
-    .product-card-inner {
-      transform-style: preserve-3d;
-      transition: transform 0.6s;
-    }
-    .product-card:hover .product-card-inner {
-      transform: rotateY(180deg);
-    }
-    .product-card-front, .product-card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-    }
-    .product-card-back {
-      transform: rotateY(180deg);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invest Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Header Section -->
-  <header class="bg-green-600 text-white py-6 text-center opacity-0" id="header">
-    <h1 class="text-3xl font-bold">Our Featured Products</h1>
-  </header>
-
-  <!-- Main Content Section -->
-  <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-container">
-    <!-- Product cards will be dynamically injected here -->
-  </main>
-
-  <!-- Footer Section -->
-  <footer class="bg-green-600 text-white py-8 opacity-0" id="footer">
-    <div class="container mx-auto text-center">
-      <p class="text-lg">&copy; 2025 Dynamic Product Showcase. All rights reserved.</p>
-      <div class="mt-4">
-        <a href="#" class="text-white hover:underline mx-2">Privacy Policy</a>
-        <a href="#" class="text-white hover:underline mx-2">Terms of Service</a>
-        <a href="#" class="text-white hover:underline mx-2">Contact Us</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    $(document).ready(function () {
-      // GSAP Animation for the Header
-      gsap.to("#header", {
-        opacity: 1,
-        y: 0,
-        duration: 1.5,
-        ease: "power4.out",
-        delay: 0.5, // Delay the header animation slightly
-      });
-
-      // GSAP Animation for the Footer
-      gsap.to("#footer", {
-        opacity: 1,
-        y: 0,
-        duration: 1.5,
-        ease: "power4.out",
-        delay: 1, // Delay the footer animation slightly after the header
-      });
-
-      // Fetch data from the Picsum API
-      $.ajax({
-        url: 'https://picsum.photos/v2/list',
-        method: 'GET',
-        success: function (data) {
-          // Iterate through the data to create product cards
-          data.forEach((item) => {
-            const productCard = `
-              <div class="product-card bg-white rounded-xl shadow-md transform scale-90 opacity-0 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:rotate-3">
-                <img src="${item.download_url}" alt="${item.author}" class="w-full rounded-t-xl h-48 object-cover">
-                <div class="p-4 text-center">
-                  <p class="text-gray-600 mb-4">Photo by ${item.author}</p>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <div class="logo">
+                <img class="star" src="./img/star.png" alt="">
+                <div>Frost Inv.</div>
+            </div>
+            <ul class="menu-items">
+                <li><a href="#">about</a></li>
+                <li><a href="#">services</a></li>
+                <li><a href="#">news</a></li>
+                <li><a href="#">contact</a></li>
+            </ul>
+        </nav>
+    </header>  
+    
+    <section class="section-one">
+        <div class="container">
+            <div class="left-side">
+                <div class="title">
+                    <h1>get gold &
+                         <img src="./img/star.png" alt="" class="star">
+                          <br> silver deliverd <br> to your door</h1>
                 </div>
-              </div>
-            `;
-            // Append the product card to the container
-            $('#product-container').append(productCard);
-          });
 
-          // Apply GSAP animation after the cards are added
-          gsap.fromTo(
-            ".product-card",
-            { opacity: 0, scale: 0.9, y: 50 },
-            { opacity: 1, scale: 1, y: 0, stagger: 0.2, duration: 1, ease: "bounce.out" }
-          );
+                <p class="p">
+                    Gold and silver have intrinsic value and adds
+                    diversification to your portfolio.
+                    We help investors narrow thier decision 
+                    down to either buying dold or silver bullion bars or coins
+                </p>
 
-          // Apply hover effect animation with GSAP
-          $(".product-card").hover(
-            function () {
-              gsap.to(this, { scale: 1.1, boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)", duration: 0.3 });
-            },
-            function () {
-              gsap.to(this, { scale: 1, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", duration: 0.3 });
-            }
-          );
+                <button>know more</button>
 
-          // Smoothly scroll to the product section with more elaborate animations
-          gsap.timeline()
-            .to(window, {
-              scrollTo: { y: "#product-container", offsetY: 20 },
-              duration: 5, // Longer duration for a slower scroll
-              ease: "power2.inOut" // Adjust easing for a smoother effect
-            })
-            .fromTo(
-              "#product-container",
-              { backgroundColor: "#ffffff" },
-              { backgroundColor: "#f0fff4", duration: 2, ease: "power1.inOut" },
-              "-=3" // Overlap this animation with the scrolling
-            )
-            .to("#product-container", {
-              backgroundColor: "#ffffff",
-              duration: 2,
-              ease: "power1.inOut"
-            });
-        },
-        error: function (error) {
-          console.error('Error fetching data from Picsum API', error);
-        },
-      });
-    });
-  </script>
+            </div>
+            <div class="right-side pyramid">
+                <img src="./img/gold.png" alt="" class="gold glow image">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="left-side hand">
+                <img class="gold image" src="./img/gold2.png" alt="">
+            </div>
+            <div class="right-side">
+                <img src="./img/star.png" class="star star-s2" alt="">
+                <div class="title">
+                    <h1>Investing for <br> the long term</h1>
+                    <h2>Reasons for investing</h2>
+                </div>
+
+                <p class="p">
+                    People often choose gold bullion as an long term investment.
+                    Silver generally follows gold in terms of relative values, and in the past decade, 
+                   gold hasdemonstrated a steady overall annual profit.
+                </p>
+
+                <div class="line"></div>
+
+                <p class="p">
+                    They can be traded in the short and medium term, gold & 
+                    silver prices move in the markets.
+                </p>
+                <button>see directions</button>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="left-side">
+                <div class="title">
+                    <h1>Timing og gold & <br> silver prices</h1>
+                    <h2>An unstoppable duo</h2>
+                </div>
+                <div class="type g-type">
+                    <p>Gold</p>
+                    <p>Gold is seen as a hedge against inflation and a store of value through 
+                    thick and through thin.</p>
+                </div>
+
+                <div class="line line-blue"></div>
+
+                <div class="type s-type">
+                    <p>Silver</p>
+                    <p>
+                        Silver prices are much more `volatile` than those of gold 
+                      in the short term.
+                    </p>
+                </div>
+                <div class="line"></div>
+            </div>
+            <div class="right-side rotation">
+                <img class="gold3 image" src="./img/gold3.png" alt="">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="left-side">
+                <img src="./img/star.png" class="star-s4 star" alt="">
+                <div class="title">
+                    <h1>3 direction</h1>
+                    <h2>Choose your gold</h2>
+                </div>
+            </div>
+            <div class="right-side">
+                <p>
+                    The fineness of gold depends on the amount of ligature - additional metals. 
+                    For example, yellow gold 585* is a metal with the addition 
+                    of 28% silver and 113.5% copper.
+                </p>
+
+                <div class="line"></div>
+            </div>
+        </div>
+        <div class="card-container">
+            <div class="card card-1">
+                <div class="rotation">
+                    <img src="./img/card-1.png" alt="" class="img-card image">
+                </div>
+                <div class="color">yellow</div>
+                <span>585 standard gold</span>
+            </div>
+            <div class="card card-2">
+                <div class="rotation">
+                    <img src="./img/card-2.png" alt="" class="img-card image">
+                </div>
+                <div class="color">white</div>
+                <span>585 standard gold</span>
+            </div>
+            <div class="card card-3">
+                <div class="rotation">
+                    <img src="./img/card-3.png" alt="" class="img-card image">
+                </div>
+                <div class="color">pink</div>
+                <span>750 standard gold</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer-section">
+        <div class="container" style="padding-bottom:5rem;">
+            <img src="./img/star.png" alt="" class="star star-s5">
+            <div class="left-side">
+                <div class="title">
+                    <h1>stay up-to date</h1>
+                    <h2>With everything precious metals</h2>
+                </div>
+            </div>
+            <div class="right-side">
+                <p class="txt">
+                    Replenish <span>your portfolio</span>
+                    with gold and silver <span>to diversity</span>
+                    your investment portfolio.
+                </p>
+            </div>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="container sides">
+            <div class="left-side">
+                <div class="logo">
+                    <img src="./img/star.png" class="star" alt="">
+                    <div>Frost Inv.</div>
+                </div>
+
+                <p class="p">
+                    We are based in Los Angeles, USA.<br>
+                    our motto is -investing in knowledge <br>
+                    pays the best dividends.
+                </p>
+            </div>
+            <div class="right-side">
+                <ul class="menu">
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">company</a></li>
+                    <li><a href="#">help</a></li>
+                    <li><a href="#">client</a></li>
+                    <li><a href="#">about</a></li>
+                    <li><a href="#">support</a></li>
+                    <li><a href="#">blog</a></li>
+                    <li><a href="#">services</a></li>
+                    <li><a href="#">jobs</a></li>
+                    <li><a href="#">docs</a></li>
+                    <li><a href="#">news</a></li>
+                    <li><a href="#">privacy policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="left-side">
+                <p> &copy; copyright 2022 . All rights reserved</p>
+            </div>
+            <div class="right-side center">
+                <p>Term and Conditions</p>
+            </div>
+        </div>
+    </footer>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js" ></script>
+<script src="script.js"></script>
 </html>
