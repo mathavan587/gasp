@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Product Showcase</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+  <style>
+    .product-card {
+      perspective: 1000px;
+    }
+    .product-card-inner {
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+    .product-card:hover .product-card-inner {
+      transform: rotateY(180deg);
+    }
+    .product-card-front, .product-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+    }
+    .product-card-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- Header Section -->
+  <header class="bg-green-600 text-white py-6 text-center opacity-0" id="header">
+    <h1 class="text-3xl font-bold">Our Featured Products</h1>
+  </header>
+
+  <!-- Main Content Section -->
+  <main class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-container">
+    <!-- Product cards will be dynamically injected here -->
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="bg-green-600 text-white py-8 opacity-0" id="footer">
+    <div class="container mx-auto text-center">
+      <p class="text-lg">&copy; 2025 Dynamic Product Showcase. All rights reserved.</p>
+      <div class="mt-4">
+        <a href="#" class="text-white hover:underline mx-2">Privacy Policy</a>
+        <a href="#" class="text-white hover:underline mx-2">Terms of Service</a>
+        <a href="#" class="text-white hover:underline mx-2">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    $(document).ready(function () {
+      // GSAP Animation for the Header
+      gsap.to("#header", {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power4.out",
+        delay: 0.5, // Delay the header animation slightly
+      });
+
+      // GSAP Animation for the Footer
+      gsap.to("#footer", {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power4.out",
+        delay: 1, // Delay the footer animation slightly after the header
+      });
+
+      // Fetch data from the Picsum API
+      $.ajax({
+        url: 'https://picsum.photos/v2/list',
+        method: 'GET',
+        success: function (data) {
+          // Iterate through the data to create product cards
+          data.forEach((item) => {
+            const productCard = `
+              <div class="product-card bg-white rounded-xl shadow-md transform scale-90 opacity-0 transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:rotate-3">
+                <img src="${item.download_url}" alt="${item.author}" class="w-full rounded-t-xl h-48 object-cover">
+                <div class="p-4 text-center">
+                  <p class="text-gray-600 mb-4">Photo by ${item.author}</p>
+                </div>
+              </div>
+            `;
+            // Append the product card to the container
+            $('#product-container').append(productCard);
+          });
+
+          // Apply GSAP animation after the cards are added
+          gsap.fromTo(
+            ".product-card",
+            { opacity: 0, scale: 0.9, y: 50 },
+            { opacity: 1, scale: 1, y: 0, stagger: 0.2, duration: 1, ease: "bounce.out" }
+          );
+
+          // Apply hover effect animation with GSAP
+          $(".product-card").hover(
+            function () {
+              gsap.to(this, { scale: 1.1, boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)", duration: 0.3 });
+            },
+            function () {
+              gsap.to(this, { scale: 1, boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", duration: 0.3 });
+            }
+          );
+
+          // Smoothly scroll to the product section with more elaborate animations
+          gsap.timeline()
+            .to(window, {
+              scrollTo: { y: "#product-container", offsetY: 20 },
+              duration: 5, // Longer duration for a slower scroll
+              ease: "power2.inOut" // Adjust easing for a smoother effect
+            })
+            .fromTo(
+              "#product-container",
+              { backgroundColor: "#ffffff" },
+              { backgroundColor: "#f0fff4", duration: 2, ease: "power1.inOut" },
+              "-=3" // Overlap this animation with the scrolling
+            )
+            .to("#product-container", {
+              backgroundColor: "#ffffff",
+              duration: 2,
+              ease: "power1.inOut"
+            });
+        },
+        error: function (error) {
+          console.error('Error fetching data from Picsum API', error);
+        },
+      });
+    });
+  </script>
+</body>
+</html>
